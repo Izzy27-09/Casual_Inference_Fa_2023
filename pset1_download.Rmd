@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Problem Set 1. Definitions 
 
 Relevant material will be covered by **Aug 24**. Problem set is due **Aug 31**.
@@ -12,21 +17,23 @@ Jose says that coming to Cornell caused him to discover statistics, and it becam
 
 ### 1.1 (7 points)
 
-In Jose's claim, what is the treatment?
+**Answer.** In Jose's claim, what is the treatment?
 
-**Answer.** Your answer here
+Jose's treament was choosing to attend Cornell University
 
 ### 1.2 (7 points)
 
 Using the mathematical notation we discussed in class, define the two potential outcomes to which Jose is referring
+**Answer.**
 
-**Answer.** Your answer here
+$$Jose_{cornell}=Statisitcs$$
+$$Jose_{NYU}=Biology$$
 
 ### 1.3 (7 points)
 
 In a sentence or two, say how the Fundamental Problem of Causal Inference applies to Jose's claim.
 
-**Answer.** Your answer here
+**Answer.** The fundamental Problem of Causal Inference when applied to Jose's claim is that we have him going to Cornell and then picking up statistics, we don't have the data of Jose if he had stayed in NYU to see if he would continue only doing Biology or if he would have eventually discovered statistics. Its impossible to get both pieces of data to test.
 
 ### 1.4 (7 points)
 
