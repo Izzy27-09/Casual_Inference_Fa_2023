@@ -1,0 +1,16 @@
+---
+title: "Testzone"
+author: "izd3"
+format: pdf
+editor: visual
+---
+
+## 
+
+```{r}
+source("prepare_nlsy97.R")
+```
+
+```{r}
+
+```
