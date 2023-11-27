@@ -1,0 +1,182 @@
+---
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+urlcolor: blue
+header-includes: \usepackage{tikz} \usetikzlibrary{arrows,shapes.arrows,positioning,shapes,patterns,calc}
+---
+
+# Problem Set 5. IV + RD {.unnumbered}
+
+Relevant material will be covered by **Oct 26**. Problem set is due **Nov 2**.
+
+To complete the problem set, feel free to [**Download the .Rmd**](https://drive.google.com/file/d/1eonqcl5X1_ksnXHnDBI7FDifV-Hi9lAJ/view?usp=sharing). Omit your name so we can have anonymous peer feedback. Submit the PDF on [Canvas](https://canvas.cornell.edu/courses/57329).
+
+The learning goals of completing this problem set are to engage with conceptual assumptions for instrumental variables and regression discontinuity.
+
+## 1. (20 points) Instrumental variables in experiments {.unnumbered}
+
+Suppose you are an elementary school principal. You randomize some students to a new program to receive extra tutoring at an off-site location in the evenings. You randomize other students to a no-tutoring condition.
+
+```{=tex}
+\begin{tikzpicture}[x = .3in, y = .15in]
+    \node (z) at (-6,0) {$Z$};
+    \node (a) at (-2,0) {$A$};
+    \node (y) at  (2,0) {$Y$};
+    \node[font = \footnotesize, align = right, anchor = east] at (z.west) {Randomized to\\extra tutoring};
+    \node (u) at  (-2,-2) {$U$};
+    \node[font = \footnotesize, align = center, anchor = south] at (a.north) {Attends\\extra tutoring};
+    \node[font = \footnotesize, align = left, anchor = west] at  (y.east) {Rated proficient in reading\\at end of the term};
+    \node[font = \footnotesize, align = right, anchor = east] at (u.west) {Parent actions};
+    \draw[->, >=stealth, thick] (z) -- (a);
+    \draw[->, >=stealth, thick] (a) --  (y);
+    \draw[->, >=stealth, thick] (u) --  (a);
+    \draw[->, >=stealth, thick] (u) --  (y);
+  \end{tikzpicture}
+```
+In many cases, students' treatment assignments $Z$ determines their actual treatments $A$ (when $Z = 1$ then $A = 1$, and when $Z = 0$ then $A = 0$). But there are some difficulties:
+
+a)  The parents of some students work evenings and can't drive their children to the tutoring ($U$). No matter the value of $Z$, these children do not receive tutoring ($A = 0$).
+b)  The parents of some students make a huge fuss ($U$) so that regardless of the value of $Z$, these parents ensure that their children receive tutoring ($A = 1$).
+
+Answer the following in a sentence each.
+
+1.  (3 points) What is the intent to treat effect?
+
+    $$
+    E(Y|Z=1)-E(Y|Z=0)
+    $$
+
+    It is the average treatment effect for a group of participants based on their randomized assignment, regardless of whether they actually received the treatment or not. In this case, it would be the average effect of being assigned to the tutoring program (Z).
+
+2.  (3 points) Who are the always-takers?
+
+    The always-takers are students whose parents ensure that they receive tutoring (A=1) regardless of their random assignment (Z=0 or Z=1).
+
+3.  (3 points) Who are the never-takers?
+
+    The never-takers are the group of students whose parents cannot drive them to tutoring (U) and, as a result, they never receive tutoring (A=0) regardless of their random assignment (Z=0 or Z=1).
+
+4.  (3 points) Who are the compliers?
+
+    The compliers are the group of students who receive tutoring (A=1) if and only if they are assigned to the tutoring program (Z=1), and they do not receive tutoring (A=0) if they are assigned to the no-tutoring condition (Z=0).
+
+5.  (3 points) Although they are not discussed above, describe how someone could be a defier.
+
+    A defier would be a student who does the exact opposite of what their assignment group. In this case, they would receive tutoring (A=1) when assigned to the no-tutoring condition (Z=0) and would not receive tutoring (A=0) when assigned to the tutoring program (Z=1)
+
+6.  (5 points) What assumption was made credible by randomization of $Z$?
+
+    The assumption that was made credible by Z is that students in both treatment groups Z=1 and Z=0 are similar to each other on average in terms of visible variables which ensures that most differences in outcomes hinge on their Z assignment
+
+## 2. (10 points) IV in observational studies {.unnumbered}
+
+Much of the water supply for the state of California comes from snowmelt in the Sierra Nevada Mountains. Two economists are very excited to notice that some years have much larger snowpacks than others---this could be an instrument!
+
+```         
+```
+
+```{=tex}
+\begin{table}[!ht]
+\centering
+\begin{tabular}{cc}
+  Economist 1 & Economist 2 \\
+  \hline
+  \begin{tikzpicture}[x = .3in, y = .2in]
+    \node[font = \footnotesize, align = center] (z) at (-6,0) {Sierra\\snowpack};
+    \node[font = \footnotesize, align = center] (t) at (-2,0) {Agricultural\\productivity};
+    \node[font = \footnotesize, align = center] (y) at  (2,0) {State\\GDP};
+    \node[font = \footnotesize] (u) at  (-2,-2) {$U$};
+    \draw[->, >=stealth, thick] (z) -- (t);
+    \draw[->, >=stealth, thick] (t) --  (y);
+    \draw[->, >=stealth, thick] (u) --  (t);
+    \draw[->, >=stealth, thick] (u) --  (y);
+  \end{tikzpicture} &
+  \begin{tikzpicture}[x = .3in, y = .2in]
+    \node[font = \footnotesize, align = center] (z) at (-6,0) {Sierra\\snowpack};
+    \node[font = \footnotesize, align = center] (t) at (-2,0) {Ski resort\\productivity};
+    \node[font = \footnotesize, align = center] (y) at  (2,0) {State\\GDP};
+    \node[font = \footnotesize] (u) at  (-2,-2) {$U$};
+    \draw[->, >=stealth, thick] (z) -- (t);
+    \draw[->, >=stealth, thick] (t) --  (y);
+    \draw[->, >=stealth, thick] (u) --  (t);
+    \draw[->, >=stealth, thick] (u) --  (y);
+  \end{tikzpicture}
+\end{tabular}
+\end{table}
+```
+The first economist argues that random differences in the Sierra snowpack create random fluctuations in agricultural productivity, thereby providing an instrumental variable for the effect of agricultural productivity on the state's GDP.
+
+The second economist argues that random difference in the Sierra snowpack create random fluctuations in the quality of skiing at Mammoth Mountain and other Sierra resorts, thereby providing an instrumental variable for the effect of ski resort productivity on the state's GDP.
+
+Both economists argue that their instruments are valid because the snowpack is randomly assigned. Can both economists be right that their instrument is valid? Why or why not?
+
+Both economists cannot be right that their instrument is valid for estimating the effect they propose. The validity of an instrumental variable relies on the assumption that it is unrelated to the outcome of interest except through its influence on the treatment or exposure variable.
+
+1.  The first economist's instrument (Sierra snowpack) may be considered valid for estimating the effect of agricultural productivity on the state's GDP if it satisfies the conditions for an instrumental variable. However, this doesn't necessarily make it a valid instrument for estimating the effect of ski resort productivity on the state's GDP. The relationship between snowpack and agricultural productivity might be plausible, but the link between snowpack and ski resort productivity is not as direct.
+
+2.  The second economist's instrument (Sierra snowpack) may be considered valid for estimating the effect of ski resort productivity on the state's GDP if it satisfies the instrumental variable assumptions. However, it would not be a valid instrument for estimating the effect of agricultural productivity on the state's GDP, as the relationship between snowpack and agricultural productivity is not as straightforward.
+
+## 3. (20 points) Regression discontinuity {.unnumbered}
+
+### 3.1 (5 points) A local estimand {.unnumbered}
+
+A colleague tells you they've read that regression discontinuity designs have proven that winning one election (greater than 50% of the vote) causes a political party to have better chances in the next election. In your district, the winner won with 70% of the vote. Why isn't the regression discontinuity evidence very informative for districts like yours?
+
+The regression discontinuity design relies on the idea that a small difference in the treatment assignment (in this case, winning an election with 50% versus 70% of the vote) causes a significant difference in the outcome (chances in the next election). However, in this district where the winner won with 70% of the vote, there is no such small difference near the 50% threshold that would create a clear discontinuity. The treatment group (winning with more than 50%) and the control group (winning with less than 50%) do not exist in a way that allows for a natural comparison, making the regression discontinuity design less informative in such districts.
+
+### 3.2 (5 points) Examples of Discontinuity {.unnumbered}
+
+Describe an example you have encountered where a regression discontinuity analysis might be used to estimate a causal effect. Draw a causal diagram for the example.
+
+Suppose you want to estimate the effect of a scholarship program on students' test scores. An example might be a scholarship program that offers financial support to students based on their high school GPA. If a student's GPA is just above a certain threshold, they receive a scholarship, while those just below the threshold do not. You could use a regression discontinuity design to estimate the causal effect of this scholarship program on test scores.
+
+$$
+GPA(X)-->Scholarship\,Assignment(T)-->Test\,Scores(Y)
+$$
+
+In this graph depending on the student's GPA X, will determine if the will be assigned to the scholarship so long as they meet that threshold.,from there the regression discontinuity design allows you to estimate the causal effect of the scholarship program by comparing students just above and below this threshold.
+
+### 3.3 (10 points) Effect of incumbency {.unnumbered}
+
+In the discussion section, we considered two causal effects. First, we estimated the causal effect of incumbency when a senator is up for re-election. Next, we considered the causal effect of the senator who is not up for election being a democrat on the democratic vote share of the senator who is up for election.
+
+Using the \texttt{rdrobust} package, give an estimate for the second causal effect. Also, explain the results by clearly stating the quantity we are estimating in plain language and also explaining whether you conclude that the causal effect is non-zero or not.
+
+```{r}
+### Code from Discussion section to get you started
+
+library(ggplot2)
+library(rddensity)
+library(rdrobust)
+library(rdlocrand)
+
+data <- read.csv("https://raw.githubusercontent.com/rdpackages-replication/CIT_2020_CUP/master/CIT_2020_CUP_senate.csv")
+
+dem_vote_t1 <- data$demvoteshfor1
+dem_margin_t0 <- data$demmv
+
+# plotting the data
+# Shows average to the left and to the right of the cut-off
+rdplot(
+  y = dem_vote_t1, 
+  x =  dem_margin_t0, 
+  nbins = c(1000, 1000), 
+  p = 0, 
+  col.lines = "red", 
+  col.dots = "lightgray", 
+  title = "Incumbency Advantage", 
+  y.lim = c(0,100), 
+  x.label = "Dem Margin of Victory", 
+  y.label = "Dem Vote Share in next election"
+)
+```
+
+```{r}
+out <- rdrobust(dem_vote_t1, dem_margin_t0,kernel = 'triangular',  p = 1)
+summary(out)
+
+```
+
+In this we are testing to see what effect a senator who is not up for re-election has on the democratic vote share, for the weighting I chose to use the default one of triangular, as it obtains values closer to the cutoff points on both sides which tends to me more accurate in the end. After running the function we can see that the casual effect that it has is a value of 0.346 which is indeed a non zero number.
